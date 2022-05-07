@@ -1,0 +1,38 @@
+   Node* ptr;
+   Node* temp;
+   ptr = headOfIs;
+   temp = malloc(sizeof(Node));
+
+   // if(headOfIs->next == NULL){
+   //    Node* listOfIS = malloc(sizeof(Node));
+   //    listOfIS->next = NULL;
+
+   //    headOfIs->next = listOfIS;
+   // }
+
+   char tempMajor[5];
+   char tempName[5];
+
+   // Node* curr;
+   // curr = headOfIs->next;
+
+   while(ptr->next != NULL){
+      ptr = ptr->next;
+   }
+
+   // curr = malloc(sizeof(Node));
+
+   for(int i = idxOfMajor; i < 5; i++){
+      if(buffer[i] == '/'){
+         for(int j = 0; j < 5; j++ ){
+            tempName[j] = buffer[i + j + 1];
+         }
+
+         break;
+      }
+      tempMajor[i] = buffer[i];
+   }
+
+   strcpy(temp->major, tempMajor);
+   strcpy(temp->name, tempName);
+   ptr->next = temp;
