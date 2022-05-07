@@ -31,16 +31,21 @@ int main(){
    int nodeN = randomInt(10, 20);
    // int nodeN = 5;
    int nodeVals[nodeN];
-   for(int i = 0; i < nodeN; i++) nodeVals[i] = randomInt(1, 100);
-   
    Array* arr = malloc(sizeof(Array));
    arr->array = malloc(sizeof(int) * 5);
    arr->length = 0;
    
+   for(int i = 0; i < nodeN; i++){
+      nodeVals[i] = randomInt(1, 100);
 
+   }
+
+   // init the root;
    Node* rootNode = malloc(sizeof(Node));
+   // rootNode->val = randomInt(1, 100);
    rootNode->val = 500;
 
+   // make children of rootNode(10 ~ 20)
    int j = 0;
    for(int i = 0; i < nodeN; i++){
       appendRecursively(rootNode, nodeVals, arr, &j);
@@ -108,7 +113,6 @@ void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j){
          newNode->val = nodeVals[*j];
          *j = *j + 1;
          root->left = newNode;
-         push(arr, direction);
       }
       
       else appendRecursively(root->left, nodeVals, arr, j);
@@ -118,7 +122,6 @@ void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j){
          newNode->val = nodeVals[*j];
          *j = *j + 1;
          root->right = newNode;
-         push(arr, direction);
       }
       
       else appendRecursively(root->right, nodeVals, arr, j);

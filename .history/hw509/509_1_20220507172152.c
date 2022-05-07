@@ -108,7 +108,6 @@ void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j){
          newNode->val = nodeVals[*j];
          *j = *j + 1;
          root->left = newNode;
-         push(arr, direction);
       }
       
       else appendRecursively(root->left, nodeVals, arr, j);
@@ -118,7 +117,6 @@ void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j){
          newNode->val = nodeVals[*j];
          *j = *j + 1;
          root->right = newNode;
-         push(arr, direction);
       }
       
       else appendRecursively(root->right, nodeVals, arr, j);
