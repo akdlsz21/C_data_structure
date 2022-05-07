@@ -10,7 +10,7 @@ typedef struct _node{
 
 int randomInt(int start, int end);
 void generateChildrenOfRoot(Node* root);
-void appendChild(Node* root, int nodeVals[], int directionArr[], int* j);
+void appendRecursively(Node* root, int nodeVals[], int directionArr[], int* j);
 int* DFS(Node* node, int resultOfDfs[]);
 
 
@@ -31,8 +31,6 @@ int main(){
 
    }
 
-
-   
    // init the root;
    Node* rootNode = malloc(sizeof(Node));
    // rootNode->val = randomInt(1, 100);
@@ -41,7 +39,7 @@ int main(){
    // make children of rootNode(10 ~ 20)
    int j = 0;
    for(int i = 0; i < nodeN; i++){
-      appendChild(rootNode, nodeVals, directionArr, &j);
+      appendRecursively(rootNode, nodeVals, directionArr, &j);
    }
    
    int resultOfDfs[21];
@@ -51,6 +49,8 @@ int main(){
       printf("%d - ", resultOfDfs[i]);
    }
    printf("\n==========================================================\n");
+
+
 
 
 }
@@ -76,7 +76,7 @@ int* DFS(Node* node, int resultOfDfs[]){
 
 
 
-void appendChild(Node* root, int nodeVals[], int directionArr[], int* j){
+void appendRecursively(Node* root, int nodeVals[], int directionArr[], int* j){
    
    
 
@@ -88,7 +88,7 @@ void appendChild(Node* root, int nodeVals[], int directionArr[], int* j){
          root->left = newNode;
       }
       
-      else appendChild(root->left, nodeVals, directionArr, j);
+      else appendRecursively(root->left, nodeVals, directionArr, j);
    }else if(directionArr[*j] ==2){
       if(root->right == NULL){
          Node* newNode = malloc(sizeof(Node));
@@ -97,7 +97,7 @@ void appendChild(Node* root, int nodeVals[], int directionArr[], int* j){
          root->right = newNode;
       }
       
-      else appendChild(root->right, nodeVals, directionArr, j);
+      else appendRecursively(root->right, nodeVals, directionArr, j);
    }
 
 }
