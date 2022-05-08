@@ -88,36 +88,28 @@ void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN){
    while(i < nodeN){
       root = rootPointer;
       val = nodeVals[i];
-
-      while(root->left == NULL || root->right == NULL){
+      
+      while(root->left != NULL || root->right != NULL){
          direction = randomInt(1, 2, root->val, val);
          if(direction == 1){
-            if(root->left == NULL){
-               Node* newNode = malloc(sizeof(Node));
-               newNode->val = val;
-               root->left = newNode;
-               root = root->left;
-            }
+            if(root->left == NULL) break;
+            else root = root->left;
+            
          }else if(direction == 2){
-            if(root->right == NULL){
-               Node* newNode = malloc(sizeof(Node));
-               newNode->val = val;
-               root->right = newNode;
-               root = root->right;
-            }
+            if(root->right == NULL) break;
+            else root = root->right;
          }
       }
+      Node* newNode = malloc(sizeof(Node));
+      newNode->val = val;
 
-      // Node* newNode = malloc(sizeof(Node));
-      // newNode->val = val;
+      direction = randomInt(1, 2, root->val, val);
 
-      // direction = randomInt(1, 2, root->val, val);
-
-      // if(direction == 1){
-      //    root->left = newNode;
-      // }else if(direction == 2){
-      //    root->right = newNode;
-      // }
+      if(direction == 1){
+         root->left = newNode;
+      }else if(direction == 2){
+         root->right = newNode;
+      }
       i++;
    }
 }
