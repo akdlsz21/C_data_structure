@@ -16,7 +16,7 @@ typedef struct _array{
 int randomInt(int start, int end, int, int);
 // void generateChildrenOfRoot(Node* root);
 void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j);
-void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN);
+void appendIteratively(Node* root, int nodeVals[], Array* arr, int* j);
 void DFS(Node* node, int resultOfDfs[], int*);
 void helper(Node*);
 void push(Array*, int);
@@ -51,8 +51,11 @@ int main(){
    Node* iterRoot = malloc(sizeof(Node));
    iterRoot->val = 500;
 
-   int l = 0;
-   appendIteratively(iterRoot, nodeVals, arr, nodeN);
+
+   int k = 0; 
+   for(int i = 0; i < nodeN; i++){
+      appendIteratively(iterRoot, nodeVals, arr, &k);
+   }
    
 
 
@@ -69,35 +72,7 @@ int main(){
 
 }
 
-void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN){
-   Node* rootPointer = root;
-
-   int i = 0; 
-   int direction;
-   while(i < nodeN){
-      root = rootPointer;
-      int val = nodeVals[i];
-
-      while(root->left != NULL && root->right != NULL){
-         direction = randomInt(1, 2, root->val, val);
-         if(direction == 1){
-            root = root->left;
-         }else if(direction == 2){
-            root = root->right;
-         }
-      }
-
-      direction = randomInt(1, 2, root->val, val);
-      Node* newNode = malloc(sizeof(Node));
-
-      if(direction == 1){
-         root->left = newNode;
-      }else if(direction == 2){
-         root->right = newNode;
-      }
-      i++;
-   }
-}
+void appendIteratively
 
 
 

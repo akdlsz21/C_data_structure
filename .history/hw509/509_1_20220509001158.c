@@ -95,7 +95,6 @@ void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN){
       }else if(direction == 2){
          root->right = newNode;
       }
-      i++;
    }
 }
 
