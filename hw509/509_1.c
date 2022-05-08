@@ -66,6 +66,16 @@ int main(){
    printf("\n==========================================================\n");
 
 
+   int whilelooptree[200];
+   k = 0;
+   DFS(iterRoot, whilelooptree, &k);
+   printf("\n\nIterative Node tree(pre)\n==========================================================\n");
+   for(int i = 0; i < k; i++){
+      printf("%d - ", whilelooptree[i]);
+   }
+   printf("\n==========================================================\n");
+
+
 
 }
 
@@ -74,27 +84,40 @@ void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN){
 
    int i = 0; 
    int direction;
+   int val;
    while(i < nodeN){
       root = rootPointer;
-      int val = nodeVals[i];
+      val = nodeVals[i];
 
-      while(root->left != NULL && root->right != NULL){
+      while(root->left == NULL || root->right == NULL){
          direction = randomInt(1, 2, root->val, val);
          if(direction == 1){
-            root = root->left;
+            if(root->left == NULL){
+               Node* newNode = malloc(sizeof(Node));
+               newNode->val = val;
+               root->left = newNode;
+               root = root->left;
+            }
          }else if(direction == 2){
-            root = root->right;
+            if(root->right == NULL){
+               Node* newNode = malloc(sizeof(Node));
+               newNode->val = val;
+               root->right = newNode;
+               root = root->right;
+            }
          }
       }
 
-      direction = randomInt(1, 2, root->val, val);
-      Node* newNode = malloc(sizeof(Node));
+      // Node* newNode = malloc(sizeof(Node));
+      // newNode->val = val;
 
-      if(direction == 1){
-         root->left = newNode;
-      }else if(direction == 2){
-         root->right = newNode;
-      }
+      // direction = randomInt(1, 2, root->val, val);
+
+      // if(direction == 1){
+      //    root->left = newNode;
+      // }else if(direction == 2){
+      //    root->right = newNode;
+      // }
       i++;
    }
 }
