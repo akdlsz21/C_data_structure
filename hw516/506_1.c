@@ -114,8 +114,26 @@ Node* createNode(int insertVal){
 }
 
 void fillArr(int valArr[]){
-   for(int i = 0; i < 20; i++){
-      valArr[i] = randomInt(1, 30);
+   int valSetLength = 0;
+
+   int i = 0;
+   while(valSetLength <= 20){
+      int val = randomInt(1, 30);
+
+      if(valSetLength == 0){
+         valArr[valSetLength] = val;
+         valSetLength++;
+      }else{
+         for(int j = 0; j < valSetLength; j++){
+            if(valArr[j] == val) break;
+            if(j + 1 == valSetLength){
+               valArr[valSetLength] = val;
+               valSetLength++;
+            }
+         }
+
+      }
+
    }
 }
 
