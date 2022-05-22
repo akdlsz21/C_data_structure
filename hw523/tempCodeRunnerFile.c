@@ -1,0 +1,1 @@
+printf("vertex:%d -> ", peek(stack));
