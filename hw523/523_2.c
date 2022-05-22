@@ -22,6 +22,11 @@ typedef struct queue{
    int queueSize;
 }Queue;
 
+typedef struct _stack {
+   int* stack;
+   int length;
+}Stack;
+
 
 
 int visited[NUM_OF_VERTECIES];
@@ -31,12 +36,16 @@ int visited[NUM_OF_VERTECIES];
 
 void addEdge(Graph*, int, int);
 void printGraph(Graph* graph);
-void adListDfs(Graph* graph, int vertex);
+void recursiveDFS(Graph* graph, int vertex);
 void enqueue(Queue* queue, int value);
 int dequeue(Queue* queue);
 int isEmpty(Queue* queue);
 int isFull(Queue* queue);
 void bfs(Graph* graph, int startVertex);
+void iterativeDFS(Graph* graph, int startVertex);
+void push(Stack* stack, int val);
+int pop(Stack*);
+void resetVisited();
 
 
 
@@ -61,22 +70,66 @@ int main(){
 
    printGraph(graph);
 
-   for(int i = 0; i < NUM_OF_VERTECIES; i++){
-      visited[i] = 0;
-   }
+   resetVisited();
 
-   adListDfs(graph, 0);
-   for(int i = 0; i < NUM_OF_VERTECIES; i++){
-      visited[i] = 0;
-   }
+   recursiveDFS(graph, 0);
+
+   resetVisited();
+
    bfs(graph, 0);
 
+   resetVisited();
+
+   iterativeDFS(graph, 0);
+   // IterativeDFS does not has the true meaning of DFS.
+   // in the console, the next traversal of 7 should be 1.
+   // but instead goes back to 8.
+   // visited is the reason. Can't know why.
+
 }
+
+void resetVisited(){
+   for(int i = 0; i < NUM_OF_VERTECIES; i++)
+      visited[i] = 0;
+}
+
+
+void iterativeDFS(Graph* graph, int startVertex){
+   printf("\nIterative DFS: \n");
+   Stack* stack = malloc(sizeof(Stack));
+   stack->stack = malloc(sizeof(int) * 15);
+
+   visited[startVertex] = 1;
+
+   push(stack, startVertex);
+
+   while (stack->length > 0) {
+
+      int currentVertex = pop(stack);
+
+      printf("%d -> ", currentVertex);
+      Node* temp = graph->adjList[currentVertex];
+
+      while (temp != NULL) {
+         int adjVertex = temp->val;
+
+         if (visited[adjVertex] == 0) {
+            visited[adjVertex] = 1;
+            push(stack, adjVertex);
+         }
+         temp = temp->next;
+      }
+   }
+   printf("\n");
+
+}
+
+
 
 void bfs(Graph* graph, int startVertex) {
    printf("\nbfs: \n");
   Queue* que = malloc(sizeof(Queue));
-  que->data = malloc(sizeof(int) * 10);
+  que->data = malloc(sizeof(int) * 20);
   que->front = 0;
   que->rear = 0;
   que->queueSize = 10;
@@ -106,7 +159,7 @@ void bfs(Graph* graph, int startVertex) {
 
 
 
-void adListDfs(Graph* graph, int vertex){
+void recursiveDFS(Graph* graph, int vertex){
     Node* curr = graph->adjList[vertex];
 
     printf("%d -> ",vertex);
@@ -118,7 +171,7 @@ void adListDfs(Graph* graph, int vertex){
        vertex = curr->val;
 
        if(!visited[vertex])
-            adListDfs(graph, vertex);
+            recursiveDFS(graph, vertex);
         curr = curr->next;
     }
 
@@ -202,4 +255,21 @@ int isEmpty(Queue* queue){
 
 int isFull(Queue* queue){
    return ((queue->rear + 1) % QUEUE_SIZE == queue->front);
+}
+
+
+int peek(Stack* stack){
+   return stack->stack[stack->length];
+}
+
+
+void push(Stack* stack, int val){
+   stack->length++;
+   stack->stack[stack->length] = val;
+}
+
+int pop(Stack* stack){
+   int ret = stack->stack[stack->length];
+   stack->length--;
+   return ret;
 }
