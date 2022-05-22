@@ -2,6 +2,14 @@
 #include <stdlib.h>
 
 #define MAX_VERTICIES 10
+#define QUEUE_SIZE 15
+
+typedef struct queue{
+   int* data;
+   int front;
+   int rear;
+   int queueSize;
+}Queue;
 
 typedef struct _graph{
    int n;
@@ -24,6 +32,11 @@ void push(Stack* stack, int val);
 int pop(Stack*);
 void matrixIterativeDfs(Graph* graph);
 int peek(Stack*);
+void enqueue(Queue* queue, int value);
+int dequeue(Queue* queue);
+int isEmpty(Queue* queue);
+int isFull(Queue* queue);
+
 
 int main(){
    Graph* graph = malloc(sizeof(Graph));
@@ -55,8 +68,37 @@ int main(){
 
    matrixIterativeDfs(graph);
 
+   for(int i = 0; i < MAX_VERTICIES; i++)
+      visited[i] = 0;
+
+   matrixBfs(graph);
 
 }
+
+void matrixBfs(Graph* graph){
+   Queue* que = malloc(sizeof(Queue));
+   que->front = 0;
+   que->rear = 0;
+   que->queueSize = 10;
+   que->data = malloc(sizeof(int) * 15);
+
+   enqueue(que, 0);
+
+   while(!isEmpty(que)){
+      int curr = dequeue(que);
+
+      if(visited[curr] == 0){
+         visited[curr] = 1;
+         printf("Vertex:%d -> ", curr);
+
+         for(int i = 0; i < MAX_VERTICIES; i++)
+            if(graph->adj_mat[curr][i] == 1 && !visited[i]) 
+               enqueue(que, i);
+      }
+   }
+   printf("\n");
+}
+
 
 void matrixIterativeDfs(Graph* graph){
 
@@ -64,22 +106,22 @@ void matrixIterativeDfs(Graph* graph){
    stack->length = 0;
    stack->stack = malloc(sizeof(int) * 10);
    push(stack, 0);
-   visited[0] = 1;
-   while(stack->length != 0){
 
+   while(stack->length > 0){
       int curr = pop(stack);
-      visited[curr] = 1;
-      printf("vertex:%d -> ", curr );
 
-      for(int i = 0; i < MAX_VERTICIES; i++){
-         if(graph->adj_mat[curr][i] == 1 && !visited[i]){
-            if(visited[i]) continue;
-            push(stack, i);
-         }
+      if(visited[curr] == 0){
+         visited[curr] = 1;
+         printf("vertex:%d -> ", curr );
+
+         for(int i = 0; i < MAX_VERTICIES; i++)
+            if(graph->adj_mat[curr][i] == 1 && !visited[i]) 
+               push(stack, i);
       }
    }
    printf("\n");
 }
+
 
 int peek(Stack* stack){
    return stack->stack[stack->length];
@@ -125,6 +167,35 @@ int pop(Stack* stack){
    return ret;
 }
 
+
+void enqueue(Queue* queue, int value){
+   if(!isFull(queue)){
+      queue->rear = (queue->rear + 1) % QUEUE_SIZE;
+      queue->data[queue->rear] = value;
+   }else{
+      printf("Enqueue Failed: queue is Full\n");
+   }
+}
+
+int dequeue(Queue* queue){
+   int returnVal;
+   if(!isEmpty(queue)){
+      queue->front = (queue->front + 1) % QUEUE_SIZE;
+
+      returnVal = queue->data[queue->front];
+      return returnVal;
+   }else{
+      printf("Dequeue Failed: queue is Empty\n");
+   }
+}
+
+int isEmpty(Queue* queue){
+   return queue->front == queue->rear;
+}
+
+int isFull(Queue* queue){
+   return ((queue->rear + 1) % QUEUE_SIZE == queue->front);
+}
 
 
 
