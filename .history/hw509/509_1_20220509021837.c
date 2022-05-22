@@ -69,11 +69,6 @@ int main(){
 
 }
 
-
-
-
-
-
 void levelOrderTraverse(Node* root, Queue* que){
    enqueue(que, root);
    int level = 0;

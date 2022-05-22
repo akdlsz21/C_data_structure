@@ -69,11 +69,6 @@ int main(){
 
 }
 
-
-
-
-
-
 void levelOrderTraverse(Node* root, Queue* que){
    enqueue(que, root);
    int level = 0;
@@ -95,7 +90,7 @@ void levelOrderTraverse(Node* root, Queue* que){
          queLength--;
       }      
 
-      printf("] - %d\n", levelNodesCount);
+      printf("] Nodes: %d\n", levelNodesCount);
       level++;
    }
    printf("Level: %d\nNodes: %d\n", level, nodeCount);

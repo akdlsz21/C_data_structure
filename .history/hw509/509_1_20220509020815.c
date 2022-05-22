@@ -39,7 +39,7 @@ int isFull(Queue* queue);
 
 int main(){
    srand(time(NULL));
-   int nodeN = getRandomNodeVals(10, 19);
+   int nodeN = getRandomNodeVals(20, 20);
    int nodeVals[nodeN];
    for(int i = 0; i < nodeN; i++) nodeVals[i] = getRandomNodeVals(20, 100);
    
@@ -69,37 +69,22 @@ int main(){
 
 }
 
-
-
-
-
-
 void levelOrderTraverse(Node* root, Queue* que){
    enqueue(que, root);
-   int level = 0;
-   int nodeCount = 0;
    
    while(que->front != que->rear){
-      int levelNodesCount = 0;
       printf("[");
       int queLength = que->length;
-
       while(queLength >= 1){
          Node* node = dequeue(que);
-         nodeCount++;
-         levelNodesCount++;
-         printf(" %d ", node->val);
-
          if(node->left) enqueue(que, node->left);
          if(node->right) enqueue(que, node->right);
+         printf(" %d ", node->val);
          queLength--;
       }      
-
-      printf("] - %d\n", levelNodesCount);
-      level++;
+      printf("]\n");
    }
-   printf("Level: %d\nNodes: %d\n", level, nodeCount);
-   
+   printf("\n");
 }
 
 
@@ -248,17 +233,17 @@ int isFull(Queue* queue){
 
 
 /*
-0 - 84 - 0 - 51 - 0 - 50 - 0 - 63 - 0 - 63 - 0 - 58 - 0 - 100 - 0 - 68 - 0
- - 59 - 0 - 38 - 0 - 39 - 0 - 25 - 0 - 55 - 0 - 54 - 0 - 500 - 0 - 95 - 0 - 
- 94 - 0 - 27 - 0 - 0 - 46 - 0 - 87 - 0 -
+0 - 84 - 0 - 50 - 0 - 50 - 0 - 63 - 0 - 63 - 0 - 58 - 0 - 100 - 0 - 68 - 0
+ - 59 - 0 - 39 - 0 - 39 - 0 - 25 - 0 - 55 - 0 - 54 - 0 - 500 - 0 - 95 - 0 - 
+ 94 - 0 - 27 - 0 - 79 - 0 - 46 - 0 - 87 - 0 -
 
              500 
             /     \
          59         46 
       /    \         /\  
   84        25     27  87 
-    \       /\     / 
-    58     39 54  95   
+    \       /\     / \
+    58     39 54  95  79 
     / \   /  /     \
   50  68 38  55     94 
   /\   /
@@ -267,13 +252,12 @@ int isFull(Queue* queue){
      63 
 
 
-[ 500 ] - 1
-[ 59  46 ] - 2
-[ 84  25  27  87 ] - 4
-[ 58  39  54  95 ] - 4
-[ 50  68  38  55  94 ] - 5
-[ 51  63  100 ] - 3
-[ 63 ] - 1
-Level: 6
-Nodes: 20
+[ 500 ]
+[ 59  46 ]
+[ 84  25  27  87 ]
+[ 58  39  54  95  79 ]
+[ 50  68  38  55  94 ]
+[ 51  63  100 ]
+[ 63 ]
+
 */

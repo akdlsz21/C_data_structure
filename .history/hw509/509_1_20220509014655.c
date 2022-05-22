@@ -11,6 +11,10 @@ typedef struct _node{
    struct _node* right;
 }Node;
 
+typedef struct _array{
+   int* array;
+   int length;
+}Array;
 
 typedef struct queue{
    struct _node* data[QUEUE_SIZE];
@@ -22,10 +26,12 @@ typedef struct queue{
 
 
 int randomInt(int start, int end, int, int);
-void appendRecursively(Node* root, int nodeVals[], int* j);
-void appendIteratively(Node* root, int nodeVals[], int nodeN);
+// void generateChildrenOfRoot(Node* root);
+void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j);
+void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN);
 void DFS(Node* node, int resultOfDfs[], int*);
 void helper(Node*);
+void push(Array*, int);
 int getRandomNodeVals(int start, int end);
 void levelOrderTraverse(Node* root, Queue* que);
 void enqueue(Queue* queue, Node* value);
@@ -39,9 +45,15 @@ int isFull(Queue* queue);
 
 int main(){
    srand(time(NULL));
-   int nodeN = getRandomNodeVals(10, 19);
+   // nodeVal array;
+   // int nodeN = randomInt(4,4);
+   int nodeN = 10;
    int nodeVals[nodeN];
    for(int i = 0; i < nodeN; i++) nodeVals[i] = getRandomNodeVals(20, 100);
+   
+   Array* arr = malloc(sizeof(Array));
+   arr->array = malloc(sizeof(int) * 5);
+   arr->length = 0;
    
 
    Node* recurRoot = malloc(sizeof(Node));
@@ -49,14 +61,36 @@ int main(){
 
    int j = 0;
    for(int i = 0; i < nodeN; i++){
-      appendRecursively(recurRoot, nodeVals, &j);
+      appendRecursively(recurRoot, nodeVals, arr, &j);
    }
 
    Node* iterRoot = malloc(sizeof(Node));
    iterRoot->val = 500;
 
    int l = 0;
-   appendIteratively(iterRoot, nodeVals, nodeN);
+   appendIteratively(iterRoot, nodeVals, arr, nodeN);
+   
+
+
+   int resultOfDfs[200];
+   int k = 0;
+   DFS(recurRoot, resultOfDfs, &k);
+   printf("\n\nRecursive Node tree\n");
+   for(int i = 0; i < k; i++){
+      printf("%d - ", resultOfDfs[i]);
+   }
+   printf("\nn");
+
+
+   int whilelooptree[200];
+   k = 0;
+   DFS(iterRoot, whilelooptree, &k);
+   printf("\n\nIterative Node tree\n");
+   for(int i = 0; i < k; i++){
+      printf("%d - ", whilelooptree[i]);
+   }
+   printf("\nn");
+
 
    Queue* que = malloc(sizeof(Queue));
    que->front = 0;
@@ -69,41 +103,26 @@ int main(){
 
 }
 
-
-
-
-
-
 void levelOrderTraverse(Node* root, Queue* que){
    enqueue(que, root);
-   int level = 0;
-   int nodeCount = 0;
    
    while(que->front != que->rear){
-      int levelNodesCount = 0;
       printf("[");
       int queLength = que->length;
-
       while(queLength >= 1){
          Node* node = dequeue(que);
-         nodeCount++;
-         levelNodesCount++;
-         printf(" %d ", node->val);
-
          if(node->left) enqueue(que, node->left);
          if(node->right) enqueue(que, node->right);
+         printf(" %d ", node->val);
          queLength--;
       }      
-
-      printf("] - %d\n", levelNodesCount);
-      level++;
+      printf("]\n");
    }
-   printf("Level: %d\nNodes: %d\n", level, nodeCount);
-   
+   printf("\n");
 }
 
 
-void appendIteratively(Node* root, int nodeVals[], int nodeN){
+void appendIteratively(Node* root, int nodeVals[], Array* arr, int nodeN){
    Node* rootPointer = root;
 
    int i = 0; 
@@ -140,7 +159,7 @@ void appendIteratively(Node* root, int nodeVals[], int nodeN){
 
 
 
-void appendRecursively(Node* root, int nodeVals[], int* j){
+void appendRecursively(Node* root, int nodeVals[], Array* arr, int* j){
    
    int val = nodeVals[*j];
    int direction = randomInt(1, 2, root->val, val);
@@ -157,7 +176,7 @@ void appendRecursively(Node* root, int nodeVals[], int* j){
          root->left = newNode;
       }
       
-      else appendRecursively(root->left, nodeVals, j);
+      else appendRecursively(root->left, nodeVals, arr, j);
    }else if(direction == 2){
       if(root->right == NULL){
          Node* newNode = malloc(sizeof(Node));
@@ -166,7 +185,7 @@ void appendRecursively(Node* root, int nodeVals[], int* j){
          root->right = newNode;
       }
       
-      else appendRecursively(root->right, nodeVals, j);
+      else appendRecursively(root->right, nodeVals, arr, j);
    }
 
 }
@@ -210,6 +229,19 @@ int getRandomNodeVals(int start, int end){
    return (rand() % (end - start + 1)) + start;
 }
 
+// void generateChildrenOfRoot(Node* root){
+//    int n = randomInt(10, 20,);
+// }
+
+void push( Array* arr, int val){
+   if(arr->length % 5 == 0){
+      arr->array = realloc(arr->array, sizeof(int) * (arr->length + 5));
+   }
+   
+   arr->array[arr->length] = val;
+   arr->length++;
+}
+
 void enqueue(Queue* queue, Node* value){
    if(!isFull(queue)){
       queue->rear = (queue->rear + 1) % QUEUE_SIZE;
@@ -245,35 +277,3 @@ int isEmpty(Queue* queue){
 int isFull(Queue* queue){
    return ((queue->rear + 1) % QUEUE_SIZE == queue->front);
 }
-
-
-/*
-0 - 84 - 0 - 51 - 0 - 50 - 0 - 63 - 0 - 63 - 0 - 58 - 0 - 100 - 0 - 68 - 0
- - 59 - 0 - 38 - 0 - 39 - 0 - 25 - 0 - 55 - 0 - 54 - 0 - 500 - 0 - 95 - 0 - 
- 94 - 0 - 27 - 0 - 0 - 46 - 0 - 87 - 0 -
-
-             500 
-            /     \
-         59         46 
-      /    \         /\  
-  84        25     27  87 
-    \       /\     / 
-    58     39 54  95   
-    / \   /  /     \
-  50  68 38  55     94 
-  /\   /
-51 63 100 
-    \
-     63 
-
-
-[ 500 ] - 1
-[ 59  46 ] - 2
-[ 84  25  27  87 ] - 4
-[ 58  39  54  95 ] - 4
-[ 50  68  38  55  94 ] - 5
-[ 51  63  100 ] - 3
-[ 63 ] - 1
-Level: 6
-Nodes: 20
-*/

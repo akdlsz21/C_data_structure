@@ -69,37 +69,22 @@ int main(){
 
 }
 
-
-
-
-
-
 void levelOrderTraverse(Node* root, Queue* que){
    enqueue(que, root);
-   int level = 0;
-   int nodeCount = 0;
    
    while(que->front != que->rear){
-      int levelNodesCount = 0;
       printf("[");
       int queLength = que->length;
-
       while(queLength >= 1){
          Node* node = dequeue(que);
-         nodeCount++;
-         levelNodesCount++;
-         printf(" %d ", node->val);
-
          if(node->left) enqueue(que, node->left);
          if(node->right) enqueue(que, node->right);
+         printf(" %d ", node->val);
          queLength--;
       }      
-
-      printf("] - %d\n", levelNodesCount);
-      level++;
+      printf("]\n");
    }
-   printf("Level: %d\nNodes: %d\n", level, nodeCount);
-   
+   printf("\n");
 }
 
 
@@ -267,13 +252,12 @@ int isFull(Queue* queue){
      63 
 
 
-[ 500 ] - 1
-[ 59  46 ] - 2
-[ 84  25  27  87 ] - 4
-[ 58  39  54  95 ] - 4
-[ 50  68  38  55  94 ] - 5
-[ 51  63  100 ] - 3
-[ 63 ] - 1
-Level: 6
-Nodes: 20
+[ 500 ]
+[ 59  46 ]
+[ 84  25  27  87 ]
+[ 58  39  54  95 ]
+[ 50  68  38  55  94 ]
+[ 51  63  100 ]
+[ 63 ]
+
 */
