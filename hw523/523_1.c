@@ -11,16 +11,16 @@ typedef struct queue{
    int queueSize;
 }Queue;
 
-typedef struct _graph{
-   int n;
-   int adj_mat[MAX_VERTICIES][MAX_VERTICIES];
-}Graph;
 
 typedef struct _stack {
    int* stack;
    int length;
 }Stack;
 
+typedef struct _graph{
+   int n;
+   int adj_mat[MAX_VERTICIES][MAX_VERTICIES];
+}Graph;
 
 int visited[MAX_VERTICIES];
 
@@ -30,8 +30,8 @@ void printMatrix(Graph* graph);
 void matrixRecursiveDfs(Graph* graph, int v);
 void push(Stack* stack, int val);
 int pop(Stack*);
-void matrixIterativeDfs(Graph* graph);
 int peek(Stack*);
+void matrixIterativeDfs(Graph* graph);
 void enqueue(Queue* queue, int value);
 int dequeue(Queue* queue);
 int isEmpty(Queue* queue);

@@ -82,11 +82,6 @@ int main(){
    resetVisited();
 
    iterativeDFS(graph, 0);
-   // IterativeDFS does not has the true meaning of DFS.
-   // in the console, the next traversal of 7 should be 1.
-   // but instead goes back to 8.
-   // visited is the reason. Can't know why.
-
 }
 
 void resetVisited(){
