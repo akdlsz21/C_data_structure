@@ -17,6 +17,8 @@ Node* appendNodeRecur(Node* root, int insertVal);
 void appendNodeIter(Node* root, int insertVal);
 Node* createNode(int insertVal);
 void inorderTraverse(Node* root);
+Node* deleteNode(Node* root, int deleteVal);
+Node* minValueNode(Node* root);
 
 int main(){
    srand(time(NULL));
@@ -51,6 +53,42 @@ int main(){
 
    
 
+}
+
+Node* deleteNode(Node* root, int val){
+   if (root == NULL) return root;
+
+   if(val < root->val)
+      root->left = deleteNode(root->left, val);
+   else if( val > root->val)
+      root->right = deleteNode(root->right, val);
+   else{
+      if(root->left == NULL){
+         Node* temp = root->right;
+         free(root);
+         return temp;
+      }
+      else if(root->right == NULL){
+         Node* temp = root->left;
+         free(root);
+         return temp;
+      }
+      
+      Node* temp = minValueNode(root->right);
+
+      root->val = temp->val;
+      root->right = deleteNode(root->right, temp->val);
+   }
+   return root;
+      
+}
+
+Node* minValueNode(Node* root){
+   Node* current = root;
+   while(current->left != NULL){
+      current = current->left;
+   }
+   return current;
 }
 
 void inorderTraverse(Node* root){
