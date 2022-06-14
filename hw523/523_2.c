@@ -72,6 +72,7 @@ int main(){
 
    resetVisited();
 
+   puts("recursiveDFS");
    recursiveDFS(graph, 0);
 
    resetVisited();
@@ -164,7 +165,7 @@ void recursiveDFS(Graph* graph, int vertex){
 
     printf("%d -> ",vertex);
 
-    visited[vertex]=1;
+    visited[vertex] = 1;
     
     while(curr != NULL)
     {

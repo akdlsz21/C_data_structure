@@ -115,8 +115,9 @@ void matrixIterativeDfs(Graph* graph){
          printf("vertex:%d -> ", curr );
 
          for(int i = 0; i < MAX_VERTICIES; i++)
-            if(graph->adj_mat[curr][i] == 1 && !visited[i]) 
+            if(graph->adj_mat[curr][i] == 1 && !visited[i]) {
                push(stack, i);
+            }
       }
    }
    printf("\n");
@@ -148,9 +149,9 @@ void printMatrix(Graph* graph){
 void matrixRecursiveDfs(Graph* graph, int v){
    visited[v] = 1;
    printf("Vertex:%d -> ", v);
-   for(int w = 0; w < graph->n; w++){
-      if(graph->adj_mat[v][w] && !visited[w]){
-         matrixRecursiveDfs(graph, w);
+   for(int i = 0; i < graph->n; i++){
+      if(graph->adj_mat[v][i] && !visited[i]){
+         matrixRecursiveDfs(graph, i);
       }
    }
 }
