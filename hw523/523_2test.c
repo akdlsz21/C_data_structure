@@ -44,7 +44,7 @@ void addEdge(Graph* graph, int src, int des);
 void printGraph(Graph* graph);
 void recursiveDFS(Graph* graph, int vertex);
 void iterativeDFS(Graph* graph, int startVertex);
-
+void bfs(Graph* graph, int start);
 
 int main(){
    Graph* graph = malloc(sizeof(Graph));
@@ -75,7 +75,38 @@ int main(){
    iterativeDFS(graph, 0);
    resetVisited();
    printf("\n");
+
+   bfs(graph, 0);
 }
+
+void bfs(Graph* graph, int start){
+   printf("\nbfs: \n");
+  Queue* que = malloc(sizeof(Queue));
+  que->data = malloc(sizeof(int) * 20);
+  que->front = 0;
+  que->rear = 0;
+  que->queueSize = 10;
+
+   visited[start] = 1;
+
+   enqueue(que, start);
+
+   while(!isEmpty(que)){
+      int curr = dequeue(que);
+      printf("%d -> ", curr);
+
+      Node* temp = graph->list[curr];
+      while(temp != NULL){
+         if(!visited[temp->val]){
+            visited[temp->val] = 1;
+            enqueue(que, temp->val);
+         }
+
+         temp = temp->next;
+      }
+   }
+}
+
 
 void iterativeDFS(Graph* graph, int val){
    printf("\nIterative DFS\n");
@@ -115,6 +146,7 @@ void iterativeDFS(Graph* graph, int val){
 
          while(temp != NULL){
             if(visited[temp->val] == 0){
+               visited[temp->val] = 1;
                push(stack, temp->val);
             }
             temp = temp->next;
